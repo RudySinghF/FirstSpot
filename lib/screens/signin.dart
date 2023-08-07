@@ -1,9 +1,14 @@
-import 'package:first_spot/firebase/Controller/signupcontroller.dart';
+import 'dart:convert';
+
+import 'package:first_spot/screens/home.dart';
 import 'package:first_spot/screens/signup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import "package:http/http.dart" as http;
+import '../NetworkHandler.dart';
+import '../firebase/Controller/signupcontroller.dart';
 import 'Otp.dart';
 
 class SignIn extends StatefulWidget {
@@ -16,6 +21,9 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final _formkey = GlobalKey<FormState>();
   final controller = Get.put(signupcontroller());
+  final storage = new FlutterSecureStorage();
+  NetworkHandler networkHandler = NetworkHandler();
+  bool validate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -126,15 +134,30 @@ class _SignInState extends State<SignIn> {
                                         height: 50,
                                         width: 150,
                                         child: ElevatedButton(
-                                          onPressed: () {
+                                          onPressed: () async {
                                             if (_formkey.currentState!
                                                 .validate()) {
-                                              signupcontroller.instance
-                                                  .phoneAuthentication(
-                                                      controller.countrycode +
-                                                          controller.phone.text
-                                                              .trim());
-                                              Get.to(() => const Otp());
+                                              Map<String, String> data = {
+                                                "phoneNumber":
+                                                    controller.phone.text
+                                              };
+                                              var response =
+                                                  await networkHandler.post(
+                                                      "/user/login", data);
+                                              if (response.statusCode == 200 ||
+                                                  response.statusCode == 201) {
+                                                Map<String, dynamic> output =
+                                                    json.decode(response.body);
+                                                print(output["token"]);
+                                                await storage.write(
+                                                    key: "token",
+                                                    value: output["token"]);
+                                                Get.offUntil(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Home()),
+                                                    (route) => false);
+                                              }
                                             }
                                           },
                                           // => movetohome(context),

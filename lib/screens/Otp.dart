@@ -1,4 +1,3 @@
-import 'package:first_spot/firebase/Controller/otpcontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:get/get.dart';
@@ -11,7 +10,7 @@ class Otp extends StatefulWidget {
   State<Otp> createState() => _OtpState();
 }
 
-var optcontroller = Get.put(OtpController());
+// var optcontroller = Get.put(OtpController());
 var otpc;
 
 class _OtpState extends State<Otp> {
@@ -91,7 +90,7 @@ class _OtpState extends State<Otp> {
                                     borderWidth: 1,
                                     onSubmit: (code) {
                                       otpc = code;
-                                      OtpController.instance.verifyOTP(otpc);
+                                      // OtpController.instance.verifyOTP(otpc);
                                     },
                                   ),
                                 ]),
@@ -106,7 +105,7 @@ class _OtpState extends State<Otp> {
                                     width: 150,
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        OtpController.instance.verifyOTP(otpc);
+                                        // OtpController.instance.verifyOTP(otpc);
                                       },
                                       // => movetohome(context),
                                       style: ElevatedButton.styleFrom(

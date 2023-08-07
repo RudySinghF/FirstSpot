@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:first_spot/screens/onBoardingScreen/boardingScreenModel.dart';
+import 'package:first_spot/screens/signin.dart';
 import 'package:first_spot/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -51,7 +52,7 @@ class _boardingscreenState extends State<boardingscreen> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const SignUp()));
+                              builder: (context) => const SignIn()));
                     }
                   },
                   child: Text(
@@ -152,7 +153,7 @@ class _boardingscreenState extends State<boardingscreen> {
               onPressed: () {
                 if (currentpage == contents.length - 1) {
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => const SignUp()));
+                      MaterialPageRoute(builder: (context) => const SignIn()));
                 }
                 _controller.nextPage(
                     duration: Duration(milliseconds: 100),

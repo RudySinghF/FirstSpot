@@ -1,11 +1,13 @@
-import 'package:first_spot/firebase/Controller/signupcontroller.dart';
+import 'package:first_spot/NetworkHandler.dart';
 import 'package:first_spot/firebase/Models/user.dart';
 import 'package:first_spot/screens/Otp.dart';
+import 'package:first_spot/screens/home.dart';
 import 'package:first_spot/screens/signin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:random_string/random_string.dart';
+import '../firebase/Controller/signupcontroller.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -18,6 +20,28 @@ class _SignUpState extends State<SignUp> {
   final _formkey = GlobalKey<FormState>();
   final controller = Get.put(signupcontroller());
   String userid = randomAlphaNumeric(10);
+  NetworkHandler networkHandler = NetworkHandler();
+  bool validate = false;
+
+  checkuser() async {
+    if (controller.phone.text.length == 0) {
+      setState(() {
+        validate = false;
+      });
+    } else {
+      var response =
+          await networkHandler.get("/user/checkuser/${controller.phone.text}");
+      if (response != null) {
+        setState(() {
+          validate = false;
+        });
+      } else {
+        setState(() {
+          validate = true;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,23 +194,53 @@ class _SignUpState extends State<SignUp> {
                                         height: 50,
                                         width: 150,
                                         child: ElevatedButton(
-                                          onPressed: () {
+                                          onPressed: () async {
+                                            await checkuser();
                                             if (_formkey.currentState!
-                                                .validate()) {
-                                              final user = Usermodel(
-                                                id: userid,
-                                                name: controller.name.text,
-                                                phone: controller.phone.text
-                                                    .trim(),
-                                              );
-                                              signupcontroller.instance
-                                                  .createUser(user);
-                                              signupcontroller.instance
-                                                  .phoneAuthentication(
-                                                      controller.countrycode +
-                                                          controller.phone.text
-                                                              .trim());
-                                              Get.to(() => const Otp());
+                                                    .validate() &&
+                                                validate) {
+                                              Map<String, String> data = {
+                                                "name": controller.name.text,
+                                                "phoneNumber":
+                                                    controller.phone.text
+                                              };
+                                              await networkHandler.post(
+                                                  "/user/register", data);
+                                              Get.snackbar('Success',
+                                                  'Your account is created',
+                                                  snackPosition:
+                                                      SnackPosition.BOTTOM,
+                                                  backgroundColor:
+                                                      Color.fromARGB(255, 130,
+                                                              216, 133)
+                                                          .withOpacity(0.1),
+                                                  colorText: Color.fromARGB(
+                                                      255, 22, 141, 26));
+                                              // final user = Usermodel(
+                                              //   id: userid,
+                                              //   // name: controller.name.text,
+                                              //   phone: controller.phone.text
+                                              //       .trim(),
+                                              // );
+                                              // signupcontroller.instance
+                                              //     .createUser(user);
+                                              // signupcontroller.instance
+                                              //     .phoneAuthentication(
+                                              //         controller.countrycode +
+                                              //             controller.phone.text
+                                              //                 .trim());
+                                              Get.to(() => const Home());
+                                            } else {
+                                              Get.snackbar('Failed',
+                                                  'Something went wrong',
+                                                  snackPosition:
+                                                      SnackPosition.BOTTOM,
+                                                  backgroundColor:
+                                                      Color.fromARGB(255, 244,
+                                                              121, 113)
+                                                          .withOpacity(0.1),
+                                                  colorText: Color.fromARGB(
+                                                      255, 164, 23, 23));
                                             }
                                           },
                                           // => movetohome(context),

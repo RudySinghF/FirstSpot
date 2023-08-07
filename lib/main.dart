@@ -1,14 +1,14 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:first_spot/blank.dart';
-import 'package:first_spot/firebase/Authentication/auth.dart';
-import 'package:first_spot/firebase/Controller/otpcontroller.dart';
-import 'package:first_spot/firebase_options.dart';
 import 'package:first_spot/screens/Otp.dart';
+import 'package:first_spot/screens/PackageForm.dart';
+import 'package:first_spot/screens/TourFlowForm.dart';
+import 'package:first_spot/screens/citydetails.dart';
 import 'package:first_spot/screens/home.dart';
 import 'package:first_spot/screens/onBoardingScreen/page.dart';
 import 'package:first_spot/screens/signin.dart';
 import 'package:first_spot/screens/signup.dart';
 import 'package:first_spot/screens/splashScreen.dart';
+import 'package:first_spot/screens/tourflow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -17,10 +17,6 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
-      .then((value) => Get.put(Auth()));
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
-      .then((value) => Get.put(OtpController()));
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(MyApp()));
 }
@@ -45,7 +41,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       routes: {
-        "/": (context) => const Home(),
+        "/": (context) => splashscreen(),
         // myroutes.getStarted: (context) => getstarted(),
         // myroutes.loginroute: (context) => login(),
         // myroutes.homeroute: (context) => homepage(),
