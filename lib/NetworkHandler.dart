@@ -4,7 +4,7 @@ import "package:http/http.dart" as http;
 import "package:logger/logger.dart";
 
 class NetworkHandler {
-  String baseUrl = "https://node-api-vercel-q3ziyzylo-rudysinghf.vercel.app";
+  String baseUrl = "https://node-api-vercel-oog4sgksk-rudysinghf.vercel.app";
   var log = Logger();
   FlutterSecureStorage storage = FlutterSecureStorage();
 

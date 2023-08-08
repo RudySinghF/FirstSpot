@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:first_spot/Query/userquery.dart';
+
 // import 'package:first_spot/firebase/Authentication/auth.dart';
-import 'package:first_spot/firebase/Models/user.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +12,6 @@ class signupcontroller extends GetxController {
   final name = TextEditingController();
   final phone = TextEditingController();
   final countrycode = "+91";
-  final userRepo = Get.put(AddUser());
 
   // void registeruser(String phone) {
   //   authentication.instance.signInUserWithPhone(phone);

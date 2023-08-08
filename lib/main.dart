@@ -1,4 +1,5 @@
 import 'package:first_spot/blank.dart';
+import 'package:first_spot/screens/Navigation/BottomNavBar.dart';
 import 'package:first_spot/screens/Otp.dart';
 import 'package:first_spot/screens/PackageForm.dart';
 import 'package:first_spot/screens/TourFlowForm.dart';

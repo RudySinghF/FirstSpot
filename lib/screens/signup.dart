@@ -1,5 +1,5 @@
 import 'package:first_spot/NetworkHandler.dart';
-import 'package:first_spot/firebase/Models/user.dart';
+import 'package:first_spot/screens/Navigation/BottomNavBar.dart';
 import 'package:first_spot/screens/Otp.dart';
 import 'package:first_spot/screens/home.dart';
 import 'package:first_spot/screens/signin.dart';
@@ -229,7 +229,7 @@ class _SignUpState extends State<SignUp> {
                                               //         controller.countrycode +
                                               //             controller.phone.text
                                               //                 .trim());
-                                              Get.to(() => const Home());
+                                              Get.to(() => const BottomNav());
                                             } else {
                                               Get.snackbar('Failed',
                                                   'Something went wrong',

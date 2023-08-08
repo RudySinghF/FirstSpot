@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
           child: Column(
             children: [
               SizedBox(
-                height: 20,
+                height: 45,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,7 +69,7 @@ class _HomeState extends State<Home> {
                             height: 4,
                           ),
                           Text(
-                            "want to go?",
+                            "you want to go?",
                             style: TextStyle(
                                 fontFamily: GoogleFonts.montserrat().fontFamily,
                                 color: Color(0xFF29303D),

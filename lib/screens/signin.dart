@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:first_spot/screens/Navigation/BottomNavBar.dart';
 import 'package:first_spot/screens/home.dart';
 import 'package:first_spot/screens/signup.dart';
 import 'package:flutter/material.dart';
@@ -155,7 +156,7 @@ class _SignInState extends State<SignIn> {
                                                 Get.offUntil(
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            Home()),
+                                                            BottomNav()),
                                                     (route) => false);
                                               }
                                             }
