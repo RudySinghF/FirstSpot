@@ -24,7 +24,7 @@ class _LiveTrackingState extends State<LiveTracking> {
 
   List<Marker> movingMarker = [];
 
-  List<Marker> marker = [];
+  
 
   int tapped = 0;
   Location location = Location(
