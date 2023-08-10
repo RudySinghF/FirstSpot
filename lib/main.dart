@@ -5,6 +5,7 @@ import 'package:first_spot/screens/PackageForm.dart';
 import 'package:first_spot/screens/TourFlowForm.dart';
 import 'package:first_spot/screens/citydetails.dart';
 import 'package:first_spot/screens/home.dart';
+import 'package:first_spot/screens/liveroutetractking.dart';
 import 'package:first_spot/screens/onBoardingScreen/page.dart';
 import 'package:first_spot/screens/signin.dart';
 import 'package:first_spot/screens/signup.dart';
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       routes: {
-        "/": (context) => splashscreen(),
+        "/": (context) => LiveTracking(),
         // myroutes.getStarted: (context) => getstarted(),
         // myroutes.loginroute: (context) => login(),
         // myroutes.homeroute: (context) => homepage(),

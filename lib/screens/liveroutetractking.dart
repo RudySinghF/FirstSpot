@@ -21,7 +21,11 @@ class LiveTracking extends StatefulWidget {
 
 class _LiveTrackingState extends State<LiveTracking> {
   List<LatLng> routepoints = [];
+
+  List<Marker> movingMarker = [];
+
   List<Marker> marker = [];
+
   int tapped = 0;
   Location location = Location(
       latitude: 27.177936, longitude: 78.008444, timestamp: DateTime.now());
@@ -34,22 +38,21 @@ class _LiveTrackingState extends State<LiveTracking> {
       stepp.add(tourflowpath.items[i].name);
     }
   }
-  // void simulateRoute() async {
-  //   setState(() {
-  //     var future = Future.forEach(
-  //         routepoints,
-  //         (element) => {
-  //               Future.delayed(Duration(milliseconds: 100), () {
-  //                 markers = new Marker(
-  //                     point: LatLng(element.latitude, element.longitude),
-  //                     builder: (context) => Icon(
-  //                           FontAwesomeIcons.person,
-  //                           color: Colors.black,
-  //                         ));
-  //               })
-  //             });
-  //   });
-  // }
+
+  Stream<Iterable<Marker>> simulateRoute() async* {
+    await Future<void>.delayed(Duration(seconds: 2));
+    for (int i = 0; i < routepoints.length; i++) {
+      await Future<void>.delayed(Duration(seconds: 1));
+      yield movingMarker = [
+        Marker(
+            point: LatLng(routepoints[i].latitude, routepoints[i].longitude),
+            builder: (context) => Icon(
+                  FontAwesomeIcons.person,
+                  color: Colors.black,
+                ))
+      ];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +90,38 @@ class _LiveTrackingState extends State<LiveTracking> {
                     ),
                     MarkerLayer(
                       markers: marker,
+                    ),
+                    StreamBuilder<Iterable<Marker>>(
+                      stream: simulateRoute(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.active) {
+                          if (snapshot.hasData) {
+                            final mark = snapshot.data!.toList();
+                            if (movingMarker
+                                    .elementAt(movingMarker.length - 1) ==
+                                marker.elementAt(0)) {
+                              setState(() {
+                                stepp.removeAt(0);
+                                stepp.insert(0, "Complete");
+                              });
+                            }
+                            return MarkerLayer(
+                              markers: mark,
+                            );
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text(snapshot.error.toString()));
+                          } else {
+                            return Center(
+                              child: Text("Something went wrong"),
+                            );
+                          }
+                        }
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
                     )
                   ],
                 ),
@@ -192,10 +227,9 @@ class _LiveTrackingState extends State<LiveTracking> {
                                   'http://router.project-osrm.org/route/v1/driving/$v2,$v1;$v4,$v3?steps=true&annotations=true&geometries=geojson&overview=full');
                               var response = await http.get(url);
                               setState(() {
-                                stepp.removeAt(i);
-                                stepp.insert(i, "Complete");
                                 var router = jsonDecode(response.body)['routes']
                                     [0]['geometry']['coordinates'];
+
                                 for (int i = 0; i < router.length; i++) {
                                   var rep = router[i].toString();
                                   rep = rep.replaceAll("[", "");
@@ -210,17 +244,17 @@ class _LiveTrackingState extends State<LiveTracking> {
                                       timestamp: DateTime.now());
 
                                   print(routepoints);
-
-                                  marker = [
-                                    Marker(
-                                        point: LatLng(double.parse(lat1[1]),
-                                            double.parse(long1[0])),
-                                        builder: (context) => Icon(
-                                              FontAwesomeIcons.person,
-                                              color: Colors.black,
-                                            ))
-                                  ];
                                 }
+                                marker.add(Marker(
+                                    point: LatLng(
+                                        routepoints[routepoints.length - 1]
+                                            .latitude,
+                                        routepoints[routepoints.length - 1]
+                                            .longitude),
+                                    builder: (context) => Icon(
+                                          FontAwesomeIcons.locationDot,
+                                          color: Colors.red,
+                                        )));
                               });
                             }
                           },
